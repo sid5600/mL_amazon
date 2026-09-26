@@ -1,0 +1,22 @@
+# Data files and archives
+*.zip
+*.tar.gz
+*.tsv
+*.csv
+*.parquet
+processed_data/
+
+# Logs and scratch files
+*.log
+processing_log.txt
+*.tmp
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ipynb_checkpoints/
+venv/
+.venv/
+env/
