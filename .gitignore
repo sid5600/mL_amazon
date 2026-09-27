@@ -6,6 +6,7 @@
 *.parquet
 processed_data/
 data/
+duckdb_spill/
 output/
 
 # Logs and scratch files
