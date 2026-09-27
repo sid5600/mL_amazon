@@ -5,11 +5,16 @@
 *.csv
 *.parquet
 processed_data/
+data/
+output/
 
 # Logs and scratch files
 *.log
 processing_log.txt
 *.tmp
+
+# OS files
+.DS_Store
 
 # Python artifacts
 __pycache__/

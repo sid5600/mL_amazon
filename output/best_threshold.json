@@ -1,0 +1,66 @@
+{
+  "threshold": 0.9500000000000002,
+  "model_name": "lightgbm",
+  "cv_results": [
+    {
+      "fold": 1,
+      "threshold": 0.95,
+      "f0.5": 0.9662,
+      "precision": 0.9817,
+      "recall": 0.9085
+    },
+    {
+      "fold": 2,
+      "threshold": 0.95,
+      "f0.5": 0.9642,
+      "precision": 0.9803,
+      "recall": 0.9045
+    },
+    {
+      "fold": 3,
+      "threshold": 0.95,
+      "f0.5": 0.9647,
+      "precision": 0.9805,
+      "recall": 0.906
+    },
+    {
+      "fold": 4,
+      "threshold": 0.95,
+      "f0.5": 0.9645,
+      "precision": 0.9807,
+      "recall": 0.9049
+    },
+    {
+      "fold": 5,
+      "threshold": 0.95,
+      "f0.5": 0.9637,
+      "precision": 0.9801,
+      "recall": 0.9033
+    }
+  ],
+  "feature_cols": [
+    "f_name_jaccard",
+    "f_name_overlap",
+    "f_name_jaro_winkler",
+    "f_name_jaro_winkler_raw",
+    "f_name_char3gram",
+    "f_name_char4gram",
+    "f_name_len_ratio",
+    "f_name_token_ratio",
+    "f_name_exact_match",
+    "f_addr_jaccard",
+    "f_addr_overlap",
+    "f_addr_jaro_winkler",
+    "f_addr_jaro_winkler_raw",
+    "f_addr_char3gram",
+    "f_addr_len_ratio",
+    "f_addr_exact_match",
+    "f_both_addr_empty",
+    "f_addr_missing_one",
+    "f_country_match",
+    "f_both_country_missing",
+    "f_name_in_addr_overlap",
+    "f_tfidf_name_cosine",
+    "f_tfidf_addr_cosine"
+  ]
+}
