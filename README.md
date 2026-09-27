@@ -77,3 +77,85 @@ Each processed file contains **4 original columns (strictly unchanged)** + **9 e
 - [ ] **Inference & Submission:**
   - Generate matching predictions for `test_source1.tsv` against `test_source2.tsv` and `test_source3.tsv`.
   - Format output as `matching_results.tsv`.
+
+---
+
+## 5. Setup for a New Teammate
+
+The input data and generated outputs are intentionally not stored in GitHub because they are several GB in total. After cloning this repository, each teammate must receive or download the data separately.
+
+From the repository root, create this layout:
+
+```text
+amazon_ml/
+├── data/
+│   ├── processed/
+│   │   ├── train_source1_processed.tsv
+│   │   ├── train_source2_processed.tsv
+│   │   ├── train_source3_processed.tsv
+│   │   ├── test_source1_processed.tsv
+│   │   ├── test_source2_processed.tsv
+│   │   └── test_source3_processed.tsv
+│   └── raw/
+│       └── train/
+│           └── train_ground_truth.tsv
+└── output/
+```
+
+The processed TSV files and `train_ground_truth.tsv` can be shared through Google Drive, OneDrive, Dropbox, S3, or another approved shared storage location. Do not commit them to GitHub.
+
+Install Python 3.10 or newer, then install the required packages:
+
+```bash
+python -m venv .venv
+# Linux/macOS:
+source .venv/bin/activate
+# Windows PowerShell:
+# .venv\Scripts\Activate.ps1
+
+python -m pip install --upgrade pip
+python -m pip install numpy pandas scikit-learn duckdb pyarrow matplotlib seaborn jupyter
+```
+
+## 6. Recreate the Training Pipeline
+
+Run these commands from the repository root. The processed data and ground truth must be present first.
+
+```bash
+# Generate training candidate pairs.
+# This creates output/train_candidate_pairs.tsv and a local DuckDB spill file.
+python build_train_candidates.py
+
+# Build pairwise features, train the model, and tune the F0.5 threshold.
+python run_experiments.py
+```
+
+The generated files are local artifacts and are ignored by Git:
+
+- `duckdb_spill/blocking_train.duckdb`
+- `output/train_candidate_pairs.tsv`
+- `output/features_cache/train_features.parquet`
+- `output/model.pkl`
+- `output/best_threshold.json`
+
+The DuckDB file may be about 1.1 GB. Each teammate should have at least 8 GB of available RAM and additional free disk space because DuckDB uses temporary spill files while blocking.
+
+## 7. Generate Test Candidate Pairs
+
+`test_blocking_sample.py` expects the three processed test TSVs in the project root, while the rest of the project uses `data/processed/`. On Linux/macOS, create temporary links before running it:
+
+```bash
+ln -s data/processed/test_source1_processed.tsv test_source1_processed.tsv
+ln -s data/processed/test_source2_processed.tsv test_source2_processed.tsv
+ln -s data/processed/test_source3_processed.tsv test_source3_processed.tsv
+python test_blocking_sample.py
+```
+
+This generates `output/candidate_pairs.tsv`. On Windows, copy the three files into the repository root instead of creating links. Do not commit those copies.
+
+## 8. Important Notes
+
+- Always run commands from the repository root.
+- Do not commit `data/`, `output/`, or `duckdb_spill/`.
+- The DuckDB file is generated from the processed data and does not need to be exchanged between teammates.
+- The preprocessing script contains machine-specific paths from the original environment. Use the already generated processed TSVs, or update its `BASE_DATA_DIR` and `OUTPUT_DIR` before rerunning preprocessing.
